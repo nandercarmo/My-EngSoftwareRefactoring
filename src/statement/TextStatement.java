@@ -1,29 +1,32 @@
 package src.statement;
 
-import java.util.Enumeration;
-
 import src.customer.Customer;
 import src.rental.Rental;
 
 public class TextStatement extends Statement {
 
-	public String value(Customer aCustomer) {
-		Enumeration rentals = aCustomer.getRentals();
-		String result = "Rental Record for " + aCustomer.getName() +
-		"\n";
-		while (rentals.hasMoreElements()) {
-		   Rental each = (Rental) rentals.nextElement();
-		   //show figures for this rental
-		   result += "\t" + each.getMovie().getTitle()+ "\t" +
-		   String.valueOf(each.getCharge()) + "\n";
-		}
-		//add footer lines
-		result += "Amount owed is " +
-		String.valueOf(aCustomer.getTotalCharge()) + "\n";
-		result += "You earned " +
-		String.valueOf(aCustomer.getTotalFrequentRenterPoints()) +
-		" frequent renter points";
-		return result;
+	@Override
+	protected String getFrequentRenterPointsEarned(Customer aCustomer) {
+		return "You earned " +
+				String.valueOf(aCustomer.getTotalFrequentRenterPoints()) +
+				" frequent renter points";
 	}
-	
+
+	@Override
+	protected String getAmountOwed(Customer aCustomer) {
+		return "Amount owed is " +
+				String.valueOf(aCustomer.getTotalCharge()) + "\n";
+	}
+
+	@Override
+	protected String getRentalFigures(Rental each) {
+		return "\t" + each.getMovie().getTitle() + "\t" +
+				String.valueOf(each.getCharge()) + "\n";
+	}
+
+	@Override
+	protected String getCurtomerName(Customer aCustomer) {
+		return "Rental Record for " + aCustomer.getName() + "\n";
+	}
+
 }
